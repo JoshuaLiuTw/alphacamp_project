@@ -2,8 +2,14 @@ const express = require('express')
 const app = express()
 const port = 3000
 const mongoose = require('mongoose')
+const Restaurant = require('./models/Restaurant') // 載入 restaurant model
 
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+//載入dotenv
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // 取得資料庫連線狀態
 const db = mongoose.connection
@@ -18,7 +24,7 @@ db.once('open', () => {
 
 
 const exphbs = require('express-handlebars')
-const restaurantList = require('./restaurant.json')
+
 
 // setting template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -28,7 +34,10 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results })
+    Restaurant.find() // 取出 Todo model 裡的所有資料
+    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
+    .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
+    .catch(error => console.error(error))
 })
 
 app.get('/search', (req, res) => {
