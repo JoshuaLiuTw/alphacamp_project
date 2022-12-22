@@ -3,6 +3,7 @@ const app = express()
 const port = 3000
 const mongoose = require('mongoose')
 const Restaurant = require('./models/Restaurant') // 載入 restaurant model
+const bodyParser = require('body-parser')
 
 //載入dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -22,7 +23,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-
+app.use(bodyParser.urlencoded({ extended: true }))
 const exphbs = require('express-handlebars')
 
 
@@ -33,12 +34,25 @@ app.set('view engine', 'handlebars')
 // setting static files
 app.use(express.static('public'))
 
+// 將資料傳給 index 樣版
 app.get('/', (req, res) => {
-    Restaurant.find() // 取出 Todo model 裡的所有資料
-    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
-    .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
+  Restaurant.find() // 
+    .lean() // 
+    .then(restaurants => res.render('index', { restaurants }))
     .catch(error => console.error(error))
 })
+
+//新增
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  return Restaurant.create(req.body)//將資料傳回資料庫
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 
 app.get('/search', (req, res) => {
 
