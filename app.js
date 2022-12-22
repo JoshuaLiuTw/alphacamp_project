@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error))
 })
 
-//新增
+//新增餐廳
 app.get('/restaurants/new', (req, res) => {
   return res.render('new')
 })
@@ -54,6 +54,7 @@ app.post('/restaurants', (req, res) => {
 })
 
 
+//搜尋餐廳
 app.get('/search', (req, res) => {
 
   if (!req.query.keyword) {
@@ -69,11 +70,13 @@ app.get('/search', (req, res) => {
   res.render('index', { restaurants: restaurants })
 })
 
-app.get('/restaurants/:restaurant_id', (req, res) => {
-
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
-
-  res.render('show', { restaurant: restaurant })
+//
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then((restaurant) => res.render('show', { restaurant }))
+    .catch(error => console.log(error))
 })
 
 // start and listen on the Express server
