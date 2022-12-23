@@ -23,7 +23,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 const exphbs = require('express-handlebars')
 
 
@@ -70,16 +70,48 @@ app.get('/search', (req, res) => {
   res.render('index', { restaurants: restaurants })
 })
 
-//
-app.get('/restaurants/:id', (req, res) => {
-  const id = req.params.id
+//餐廳詳細資料
+app.get('/restaurants/:_id', (req, res) => {
+  const id = req.params._id
   return Restaurant.findById(id)
     .lean()
     .then((restaurant) => res.render('show', { restaurant }))
     .catch(error => console.log(error))
 })
 
+//編輯餐廳頁面 
+app.get('/restaurants/:_id/edit', (req, res) => {
+  const id = req.params._id
+  return Restaurant.findById(id)
+    .lean()
+    .then((restaurant) => res.render('edit', { restaurant }))
+    .catch(error => console.log(error));
+})
+
+//編輯後更新餐廳頁面 
+app.post('/restaurants/:_id/edit', (req, res) => {
+  const id = req.params._id
+  return Restaurant.findById(id)
+    .then(restaurant => {
+      restaurant.name = req.body.name
+      restaurant.image = req.body.image
+      restaurant.category = req.body.category
+      restaurant.rating = req.body.rating
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(error => console.log(error))
+})
+//刪除餐廳頁面 
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Restaurants.findById(id)
+    .then(restaurants => restaurants.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 // start and listen on the Express server
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
-})
+});

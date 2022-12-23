@@ -1,0 +1,7 @@
+<form action="/restaurants/{{ restaurant._id }}/edit" method="POST">
+  <input type="text" placeholder="name" name="name" value="{{restaurant.name}}">
+  <input type="url" placeholder="image" name="image" value="{{restaurant.image}}">
+  <input type="text" placeholder="category" name="category" value="{{restaurant.category}}">
+  <input type="number" placeholder="rating" name="rating" value="{{restaurant.rating}}">
+  <button type="submit">Save</button>
+</form>
