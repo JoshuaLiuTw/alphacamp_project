@@ -63,12 +63,18 @@ app.get('/search', (req, res) => {
 
   const keyword = req.query.keyword.trim().toLowerCase()
 
-  const restaurants = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword) || restaurant.category.includes(keyword)
-  })
-
-  res.render('index', { restaurants: restaurants })
-})
+  Restaurant.find({})
+    .lean()
+    .then((restaurantsData) => {
+      const filterRestaurantsData = restaurantsData.filter(
+        (data) =>
+          data.name.toLowerCase().includes(keyword) ||
+          data.category.includes(keyword)
+      );
+      res.render("index", { restaurantsData: filterRestaurantsData, keyword });
+    })
+    .catch((err) => console.log(err));
+});
 
 //餐廳詳細資料
 app.get('/restaurants/:_id', (req, res) => {
@@ -105,7 +111,7 @@ app.post('/restaurants/:_id/edit', (req, res) => {
 //刪除餐廳頁面 
 app.post('/restaurants/:id/delete', (req, res) => {
   const id = req.params.id
-  return Restaurants.findById(id)
+  return Restaurant.findById(id)
     .then(restaurants => restaurants.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
