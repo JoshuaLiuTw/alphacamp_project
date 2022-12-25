@@ -1,7 +1,7 @@
 // 引用 Express 與 Express 路由器
 const express = require('express')
 const router = express.Router()
-// 引用 Todo model
+// 引用 Restaurant model
 const Restaurant = require('../../models/Restaurant')
 // 定義首頁路由
 router.get('/', (req, res) => {
@@ -28,7 +28,8 @@ router.get('/search', (req, res) => {
           data.name.toLowerCase().includes(keyword) ||
           data.category.includes(keyword)
       );
-      res.render("index", { restaurantsData: filterRestaurantsData, keyword });
+
+      res.render("index", { restaurants: filterRestaurantsData, keyword: req.query.keyword });
     })
     .catch((err) => console.log(err));
 });

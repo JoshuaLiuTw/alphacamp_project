@@ -1,17 +1,20 @@
 // 引用 Express 與 Express 路由器
 const express = require('express')
 const router = express.Router()
-// 引用 Todo model
+// 引用 Restaurant model
 const Restaurant = require('../../models/Restaurant')
 
 //新增餐廳
 router.get('/new', (req, res) => {
-  return res.render('new')
+  res.render('new')
 })
 
 router.post('/', (req, res) => {
-  return Restaurant.create(req.body)//將資料傳回資料庫
-    .then(() => res.redirect('/'))
+  const restaurant = req.body
+  return Restaurant.create({ restaurant })//將資料傳回資料庫
+    .then(() => {
+      res.redirect('/')
+    })
     .catch(error => console.log(error))
 })
 
@@ -37,21 +40,22 @@ router.get('/:_id/edit', (req, res) => {
 })
 
 //編輯後更新餐廳頁面 
-router.put('/:_id/edit', (req, res) => {
+router.put('/:_id', (req, res) => {
   const id = req.params._id
   return Restaurant.findById(id)
     .then(restaurant => {
-      restaurant.name = req.body.name
-      restaurant.image = req.body.image
-      restaurant.category = req.body.category
-      restaurant.rating = req.body.rating
+      restaurant.name = req.body.name;
+
+      restaurant.image = req.body.image;
+      restaurant.category = req.body.category;
+      restaurant.rating = req.body.rating;
       return restaurant.save()
     })
-    .then(() => res.redirect(`/${id}`))
+    .then(() => res.redirect(`/restaurants/${id}`))
     .catch(error => console.log(error))
 })
 //刪除餐廳頁面 
-router.delete('/:id/delete', (req, res) => {
+router.delete('/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
     .then(restaurants => restaurants.remove())
