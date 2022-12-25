@@ -10,8 +10,9 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const restaurant = req.body
-  return Restaurant.create({ restaurant })//將資料傳回資料庫
+  const restaurant_id = req.body.id
+  const { name, category, image, rating } = req.body
+  return Restaurant.create({ restaurant_id, name, category, image, rating })     // 存入資料庫
     .then(() => {
       res.redirect('/')
     })

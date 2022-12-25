@@ -1,5 +1,6 @@
-
+const mongoose = require("mongoose")
 const Restaurant = require('../Restaurant') // 載入 restaurant model
+const restaurantList = require("../../restaurant.json").results
 const db = require('../../config/mongoose')
 
 
