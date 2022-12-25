@@ -1,7 +1,57 @@
-<form action="/restaurants/{{ restaurant._id }}?_method=PUT" method="POST">
-  <input type="text" placeholder="name" name="name" value="{{restaurant.name}}">
-  <input type="url" placeholder="image" name="image" value="{{restaurant.image}}">
-  <input type="text" placeholder="category" name="category" value="{{restaurant.category}}">
-  <input type="number" placeholder="rating" name="rating" value="{{restaurant.rating}}">
-  <button type="submit">Save</button>
-</form>
+<div class='container w-50 my-5'> 
+  <h2 class='my-3'>new restaurant</h2>
+    <form action='/restaurants/{{ restaurant._id }}?_method=PUT' method='POST'>
+      <div class='mb-3'>
+        <label for='restaurant-name' class='form-label'>店名</label>
+        <input type='text' class='form-control' id='restaurant-name' name='name' placeholder='請輸入餐廳名稱' value='{{restaurant.name}}' required />
+          </div>
+          
+      <div class='mb-3'>
+        <label for='restaurant-category' class='form-label'>類別</label>
+        <select class='form-select' id='restaurant-category' name='category' aria-label='Default select example'>
+          <option value='其他' selected>----</option>
+          <option value='中東料理'>中東料理</option>
+          <option value='美式'>美式</option>
+          <option value='義式餐廳'>義式餐廳</option>
+          <option value='咖啡'>咖啡</option>
+          <option value='日本料理'>日本料理</option>
+          <option value='酒吧'>酒吧</option>
+      
+        </select>
+      </div>
+      
+      <div class='mb-3'>
+        <label for='restaurant-location' class='form-label'>地址</label>
+        <input type='text' class='form-control' id='restaurant-location' name='location' placeholder='請輸入餐廳地址' value='{{restaurant.location}}' required />
+      </div>
+      
+      <div class='mb-3'>
+        <label for='restaurant-googleMap' class='form-label'>Google Map</label>
+        <input type='url' class='form-control' id='restaurant-googleMap' name='google_map' placeholder='請輸入 Google Map 連結'  value='{{restaurant.google_map}}'/>
+      </div>
+      
+      <div class='mb-3'>
+        <label for='restaurant-phone' class='form-label'>電話</label>
+        <input type='tel' class='form-control' id='restaurant-phone' name='phone' placeholder='02 27662000' value='{{restaurant.phone}}' />
+      </div>
+      
+      <div class='mb-3'>
+        <label for='restaurant-image' class='form-label'>圖片</label>
+        <input type='url' class='form-control' id='restaurant-image' name='image' placeholder='請輸入圖片連結' value='{{restaurant.image}}'/>
+      </div>
+      
+      <div class='mb-3'>
+        <label for='restaurant-rating' class='form-label'>評分</label>
+        <input type='number' class='form-control' id='restaurant-rating' name='rating' min='0.0' max='5.0' step='0.5'
+           value='{{restaurant.rating}}'/>
+      </div>
+      
+      <div class='mb-3'>
+        <label for='restaurant-description' class='form-label'>餐廳描述</label>
+        <textarea class='form-control' id='restaurant-description' name='description' rows='3' >{{restaurant.description}}</textarea>
+      </div>
+      
+      <button type='submit' class='btn btn-primary'>提交</button>
+      <a href='/' class='btn btn-danger'>返回首頁</a>
+      </form>
+      </div>

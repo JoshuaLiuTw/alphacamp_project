@@ -29,7 +29,7 @@ router.get('/search', (req, res) => {
           data.category.includes(keyword)
       );
 
-      res.render("index", { restaurants: filterRestaurantsData, keyword: req.query.keyword });
+      res.render('index', { restaurants: filterRestaurantsData, keyword: req.query.keyword });
     })
     .catch((err) => console.log(err));
 });

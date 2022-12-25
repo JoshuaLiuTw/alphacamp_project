@@ -11,15 +11,13 @@ router.get('/new', (req, res) => {
 
 router.post('/', (req, res) => {
   const restaurant_id = req.body.id
-  const { name, category, image, rating } = req.body
-  return Restaurant.create({ restaurant_id, name, category, image, rating })     // 存入資料庫
+  const { name, name_en, category, location, phone, image, google_map,description, rating } = req.body
+  return Restaurant.create({ restaurant_id, name, name_en, location, phone, category, image, description, google_map, rating })     // 存入資料庫
     .then(() => {
       res.redirect('/')
     })
     .catch(error => console.log(error))
 })
-
-
 
 
 //餐廳詳細資料
