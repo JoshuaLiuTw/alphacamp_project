@@ -6,6 +6,9 @@ const home = require('./modules/home')
 // 將網址結構符合 / 字串的 request 導向 home 模組 
 router.use('/', home)
 
+const users = require('./modules/users')
+router.use('/users', users)
+
 
 // 引入  模組程式碼
 const restaurants = require('./modules/restaurants')
