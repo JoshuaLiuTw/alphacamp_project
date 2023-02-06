@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 // 引用路由器
@@ -16,6 +17,12 @@ require('./config/mongoose')
 
 const app = express()
 const port = 3000
+
+app.use(session({
+  secret:'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
