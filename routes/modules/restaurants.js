@@ -25,9 +25,9 @@ router.post('/', (req, res) => {
 router.get('/:_id', (req, res) => {
   const _id = req.params._id
   const userId = req.user._id
+  console.log(_id , userId)
   return Restaurant.findOne({ _id, userId })
     .lean()
-    // .then((restaurant) => console.log({ restaurant }))
     .then((restaurant) => res.render('show', { restaurant }))
     .catch(error => console.log(error))
 })
@@ -55,11 +55,11 @@ router.put('/:_id', (req, res) => {
       restaurant.rating = req.body.rating;
       return restaurant.save()
     })
-    .then(() => res.redirect(`/restaurants/${id}`))
+    .then(() => res.redirect(`/restaurants/${_id}`))
     .catch(error => console.log(error))
 })
 //刪除餐廳頁面 
-router.delete('/:id', (req, res) => {
+router.delete('/:_id', (req, res) => {
   const userId = req.user._id
   const _id = req.params._id
   return Restaurant.findOne({ _id, userId })
